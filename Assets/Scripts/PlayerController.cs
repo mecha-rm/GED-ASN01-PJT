@@ -6,9 +6,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    //Init the movement speed of camera and player
+    // TODO: add ability to have momentum.
+
+    // Init the movement speed of camera and player
     public float cameraSpeed = 3.0f;
-    public float movementSpeed = 2.0f;
+    public float movementSpeed = 2.5f;
 
     float pitch = 0.0f;
     float yaw = 0.0f;
@@ -32,22 +34,36 @@ public class PlayerController : MonoBehaviour
 
         transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 
-        //Moving Camera using WASD
+        // Moving Camera using WASD
+
+        // leftward and rightward movement
         if(Input.GetKey(KeyCode.W))
         {
             transform.Translate(new Vector3(0,0, movementSpeed * Time.deltaTime));
         }
-        if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A))
         {
             transform.Translate(new Vector3(-movementSpeed * Time.deltaTime, 0, 0));
         }
-        if(Input.GetKey(KeyCode.S))
+
+        // forward movement and backward movement
+        if (Input.GetKey(KeyCode.S))
         {
             transform.Translate(new Vector3(0, 0, -movementSpeed * Time.deltaTime));
         }
-        if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             transform.Translate(new Vector3(movementSpeed * Time.deltaTime, 0, 0));
+        }
+
+        // upward movmenet and downward movement
+        if(Input.GetKey(KeyCode.Q))
+        {
+            transform.Translate(new Vector3(0, movementSpeed * Time.deltaTime, 0));
+        }
+        else if(Input.GetKey(KeyCode.E))
+        {
+            transform.Translate(new Vector3(0, -movementSpeed * Time.deltaTime, 0));
         }
     }
 }
