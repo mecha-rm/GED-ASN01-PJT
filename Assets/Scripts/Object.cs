@@ -24,6 +24,12 @@ namespace GED
         {
         }
 
+        // trigger for collision.
+        private void OnTriggerEnter(Collider col)
+        {
+
+        }
+
         // Update is called once per frame
         void Update()
         {

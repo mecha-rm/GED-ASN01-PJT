@@ -31,6 +31,8 @@ namespace GED
 
         // sets whether the recently instantiated object is a player or not.
         private bool addPlayerScript = false;
+        // adds a rigid body to the entity, which allows for gravity to take effect.
+        private bool addRigidBody = false;
 
         // Start is called before the first frame update
         void Start()
@@ -45,10 +47,8 @@ namespace GED
             // instantiates a new cube at the world origin
             GameObject newObject = Instantiate(cube, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
-            // adds a player script
-            if (addPlayerScript)
-                newObject.AddComponent<PlayerController>();
-            
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
         }
 
         // Spawns a sphere
@@ -57,10 +57,8 @@ namespace GED
             // instatiates a new sphere at the world origin
             GameObject newObject = Instantiate(sphere, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
-            // adds a player script
-            if(addPlayerScript)
-                newObject.AddComponent<PlayerController>();
-            
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
         }
 
         // Spawns a capsule
@@ -69,10 +67,8 @@ namespace GED
             // instantiates a new cube at the world origin
             GameObject newObject = Instantiate(capsule, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
-            // adds a player script
-            if (addPlayerScript)
-                newObject.AddComponent<PlayerController>();
-
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
         }
 
         // Spawns a cylinder
@@ -81,10 +77,8 @@ namespace GED
             // instantiates a new cube at the world origin
             GameObject newObject = Instantiate(cylinder, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
-            // adds a player script
-            if (addPlayerScript)
-                newObject.AddComponent<PlayerController>();
-
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
         }
 
         // Spawns a cylinder
@@ -93,10 +87,8 @@ namespace GED
             // instantiates a new cube at the world origin
             GameObject newObject = Instantiate(plane, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
-            // adds a player script
-            if (addPlayerScript)
-                newObject.AddComponent<PlayerController>();
-
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
         }
 
         // Spawns a quad
@@ -105,10 +97,8 @@ namespace GED
             // instantiates a new cube at the world origin
             GameObject newObject = Instantiate(quad, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
-            // adds a player script
-            if (addPlayerScript)
-                newObject.AddComponent<PlayerController>();
-
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
         }
 
         // Spawns a terrain object
@@ -117,10 +107,8 @@ namespace GED
             // instantiates a new cube at the world origin
             GameObject newObject = Instantiate(terrain, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
-            // adds a player script
-            if (addPlayerScript)
-                newObject.AddComponent<PlayerController>();
-
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
         }
 
         // Spawns a tree
@@ -129,16 +117,33 @@ namespace GED
             // instantiates a new cube at the world origin
             GameObject newObject = Instantiate(tree, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
+        }
+
+        // adds components to spawned objects
+        private void AddSpawnComponents(GameObject newObject)
+        {
             // adds a player script
             if (addPlayerScript)
                 newObject.AddComponent<PlayerController>();
 
+            // adds a rigid body
+            if (addRigidBody)
+                newObject.AddComponent<Rigidbody>();
+
+            
         }
 
         // TOGGLES //
         public void IsPlayer()
         {
             addPlayerScript = !addPlayerScript;
+        }
+
+        public void HasRigidBody()
+        {
+            addRigidBody = !addRigidBody;
         }
 
         // Update is called once per frame
