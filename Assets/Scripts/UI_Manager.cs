@@ -14,7 +14,7 @@ namespace GED
 {
     public class UI_Manager : MonoBehaviour
     {
-        // objects used for instaniation
+        // 3D objects used for instaniation
         public GameObject cube;
         public GameObject sphere;
         public GameObject capsule;
@@ -24,7 +24,25 @@ namespace GED
         public GameObject terrain;
         public GameObject tree;
 
+        // 2D objects used for instaniation
+        public GameObject sprite;
+        public GameObject spriteMask;
+        // public GameObject tilemap;
+        public GameObject grid;
+
+        // lights
+        public GameObject direcLight;
+        public GameObject pointLight;
+        public GameObject spotLight;
+        public GameObject areaLight;
+        public GameObject reflecProbe;
+        public GameObject lightProbe;
+
+        // used to hide or show the UI
+        public GameObject ui01;
+
         // main camera and secondary camera
+        // the original plan was to allow for the switching of displays, but instead we're using turning on and off the UI.
         private bool swapCam = false;
         public Camera cam1;
         public Camera cam2;
@@ -41,10 +59,11 @@ namespace GED
         }
 
         // SPAWNERS //
+        // 3D OBJECTS //
         // Spawns a cube
         public void SpawnCube()
         {
-            // instantiates a new cube at the world origin
+            // instantiates a new object at the world origin
             GameObject newObject = Instantiate(cube, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
             // adds the spawn components.
@@ -54,7 +73,7 @@ namespace GED
         // Spawns a sphere
         public void SpawnSphere()
         {
-            // instatiates a new sphere at the world origin
+            // instatiates a new object at the world origin
             GameObject newObject = Instantiate(sphere, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
             // adds the spawn components.
@@ -66,7 +85,7 @@ namespace GED
         // Spawns a capsule
         public void SpawnCapsule()
         {
-            // instantiates a new cube at the world origin
+            // instantiates a new object at the world origin
             GameObject newObject = Instantiate(capsule, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
             // adds the spawn components.
@@ -76,7 +95,7 @@ namespace GED
         // Spawns a cylinder
         public void SpawnCylinder()
         {
-            // instantiates a new cube at the world origin
+            // instantiates a new object at the world origin
             GameObject newObject = Instantiate(cylinder, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
             // adds the spawn components.
@@ -86,7 +105,7 @@ namespace GED
         // Spawns a cylinder
         public void SpawnPlane()
         {
-            // instantiates a new cube at the world origin
+            // instantiates a new object at the world origin
             GameObject newObject = Instantiate(plane, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
             // adds the spawn components.
@@ -96,7 +115,7 @@ namespace GED
         // Spawns a quad
         public void SpawnQuad()
         {
-            // instantiates a new cube at the world origin
+            // instantiates a new object at the world origin
             GameObject newObject = Instantiate(quad, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
             // adds the spawn components.
@@ -106,7 +125,7 @@ namespace GED
         // Spawns a terrain object
         public void SpawnTerrain()
         {
-            // instantiates a new cube at the world origin
+            // instantiates a new object at the world origin
             GameObject newObject = Instantiate(terrain, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
             // adds the spawn components.
@@ -116,11 +135,113 @@ namespace GED
         // Spawns a tree
         public void SpawnTree()
         {
-            // instantiates a new cube at the world origin
+            // instantiates a new object at the world origin
             GameObject newObject = Instantiate(tree, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
             // adds the spawn components.
             AddSpawnComponents(newObject);
+        }
+
+        // 2D OBJECTS //
+        // spawns a sprite
+        public void SpawnSprite()
+        {
+            // instantiates a new object at the world origin
+            GameObject newObject = Instantiate(sprite, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
+        }
+
+        // spawns a sprite mask
+        public void SpawnSpriteMask()
+        {
+            // instantiates a new object at the world origin
+            GameObject newObject = Instantiate(spriteMask, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
+        }
+
+        // spawns a tilemap. Change the settings of the grid to get the other tilemap types.
+        //public void SpawnTilemap()
+        //{
+        //    // instantiates a new object at the world origin
+        //    GameObject newObject = Instantiate(tilemap, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+        //    // adds the spawn components.
+        //    AddSpawnComponents(newObject);
+        //}
+
+        // spawns a grid, which  point top tilemap
+        public void SpawnGrid()
+        {
+            // instantiates a new object at the world origin
+            GameObject newObject = Instantiate(grid, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds the spawn components.
+            AddSpawnComponents(newObject);
+        }
+
+        // LIGHTS //
+        // Spawn directional light
+        public void SpawnDirectionalLight()
+        {
+            // instantiates a new cube at the world origin
+            GameObject newLight = Instantiate(direcLight, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+            
+            // adds the spawn components.
+            AddSpawnComponents(newLight);
+        }
+
+        // Spawn point light
+        public void SpawnPointLight()
+        {
+            // instantiates a new cube at the world origin
+            GameObject newLight = Instantiate(pointLight, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds the spawn components.
+            AddSpawnComponents(newLight);
+        }
+
+        // Spawn spotlight
+        public void SpawnSpotlight()
+        {
+            // instantiates a new cube at the world origin
+            GameObject newLight = Instantiate(spotLight, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds the spawn components.
+            AddSpawnComponents(newLight);
+        }
+
+        // Spawn area light
+        public void SpawnAreaLight()
+        {
+            // instantiates a new cube at the world origin
+            GameObject newLight = Instantiate(areaLight, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds the spawn components.
+            AddSpawnComponents(newLight);
+        }
+
+        // Spawn reflection probe
+        public void SpawnReflectionProbe()
+        {
+            // instantiates a new cube at the world origin
+            GameObject newLight = Instantiate(reflecProbe, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds the spawn components.
+            AddSpawnComponents(newLight);
+        }
+
+        // Spawn light probe group
+        public void SpawnLightProbeGroup()
+        {
+            // instantiates a new cube at the world origin
+            GameObject newLight = Instantiate(lightProbe, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds the spawn components.
+            AddSpawnComponents(newLight);
         }
 
         // adds components to spawned objects
@@ -151,6 +272,9 @@ namespace GED
         // Update is called once per frame
         void Update()
         {
+            // swap the camera
+            if (Input.GetKeyDown(KeyCode.C))
+                ui01.SetActive(!ui01.active);
 
             // switches the camera
             // if(Input.GetKeyDown(KeyCode.C))

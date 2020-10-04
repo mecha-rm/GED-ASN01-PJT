@@ -30,30 +30,30 @@ namespace GED
         }
 
        
-        private void OnMouseDown()
-        {
-            GameObject.Find("Cube").GetComponent<CubeScript>().AddWaypointOnLeftMouseClick(false);
+        //private void OnMouseDown()
+        //{
+        //    GameObject.Find("Cube").GetComponent<CubeScript>().AddWaypointOnLeftMouseClick(false);
          
-            offset = transform.position - (Input.mousePosition - new Vector3(Screen.width / 2.0F, Screen.height / 2.0F, 0.0F)) * 0.1F;
-        }
+        //    offset = transform.position - (Input.mousePosition - new Vector3(Screen.width / 2.0F, Screen.height / 2.0F, 0.0F)) * 0.1F;
+        //}
 
         
-        private void OnMouseDrag()
-        {
-            transform.position = (Input.mousePosition - new Vector3(Screen.width / 2.0F, Screen.height / 2.0F, 0.0F)) * 0.1F + offset;
+        //private void OnMouseDrag()
+        //{
+        //    transform.position = (Input.mousePosition - new Vector3(Screen.width / 2.0F, Screen.height / 2.0F, 0.0F)) * 0.1F + offset;
 
             
-            t1.GetComponent<LineRenderer>().SetPosition(0, transform.position);
-            t2.GetComponent<LineRenderer>().SetPosition(0, transform.position);
+        //    t1.GetComponent<LineRenderer>().SetPosition(0, transform.position);
+        //    t2.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
           
-        }
+        //}
 
         
-        private void OnMouseUp()
-        {
-            GameObject.Find("Cube").GetComponent<CubeScript>().AddWaypointOnLeftMouseClick(true);
-        }
+        //private void OnMouseUp()
+        //{
+        //    GameObject.Find("Cube").GetComponent<CubeScript>().AddWaypointOnLeftMouseClick(true);
+        //}
 
         
         void Update()
