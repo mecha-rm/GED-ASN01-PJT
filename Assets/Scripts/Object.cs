@@ -27,7 +27,24 @@ namespace GED
         // trigger for collision.
         private void OnTriggerEnter(Collider col)
         {
+        
+        }
 
+        // called when you click on an object
+        private void OnMouseDown()
+        {
+        }
+
+        // called when you drag the mouse
+        private void OnMouseDrag()
+        {
+            
+        }
+
+        // called when you release the mouse
+        private void OnMouseUp()
+        {
+            
         }
 
         // Update is called once per frame
