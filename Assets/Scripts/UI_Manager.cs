@@ -59,6 +59,8 @@ namespace GED
 
             // adds the spawn components.
             AddSpawnComponents(newObject);
+
+            // newObject.GetComponent<SphereCollider>().isTrigger = true;
         }
 
         // Spawns a capsule
