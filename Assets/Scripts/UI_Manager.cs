@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+ * References:
+    * https://answers.unity.com/questions/1087029/how-to-change-camera-on-trigger-enter-unity-5.html
+    * https://answers.unity.com/questions/1171111/hideunhide-game-object.html
+    * https://docs.unity3d.com/ScriptReference/Component-gameObject.html
+    * 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +23,11 @@ namespace GED
         public GameObject quad;
         public GameObject terrain;
         public GameObject tree;
+
+        // main camera and secondary camera
+        private bool swapCam = false;
+        public Camera cam1;
+        public Camera cam2;
 
         // sets whether the recently instantiated object is a player or not.
         private bool addPlayerScript = false;
@@ -132,6 +145,38 @@ namespace GED
         void Update()
         {
 
+            // switches the camera
+            // if(Input.GetKeyDown(KeyCode.C))
+            // {
+            // 
+            //     // TODO: this isn't very intuitive. This is just to see if I can get it to work.
+            //     swapCam = !swapCam;
+            //     switch(swapCam)
+            //     {
+            //         case true:
+            //             // cam1.enabled = false;
+            //             //cam1.targetDisplay = 2;
+            // 
+            //             // cam2.enabled = true;
+            //             //cam2.targetDisplay = 1;
+            //             int temp1 = cam1.targetDisplay;
+            //             int temp2 = cam2.targetDisplay;
+            // 
+            //             Display.displays[cam2.targetDisplay].Activate();
+            //             // gameObject.SetActive(false);
+            //             break;
+            //         case false:
+            //             // cam2.enabled = false;
+            //             //cam2.targetDisplay = 2;
+            // 
+            //             // cam1.enabled = true;
+            //             //cam1.targetDisplay = 1;
+            // 
+            //             // gameObject.SetActive(true);
+            //             Display.displays[cam1.targetDisplay].Activate();
+            //             break;
+            //     }
+            // }
         }
     }
 }

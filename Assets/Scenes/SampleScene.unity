@@ -2613,6 +2613,8 @@ MonoBehaviour:
   quad: {fileID: 955106822620126611, guid: 4e17d787cce232448b9c11afe8920ec0, type: 3}
   terrain: {fileID: 8574592931287732523, guid: 776e4b167bf247a408dbea314eb5a85a, type: 3}
   tree: {fileID: 8501250606638080657, guid: 8bab372dbd0190d4cab53c6db9627c7c, type: 3}
+  cam1: {fileID: 963194227}
+  cam2: {fileID: 1820018587}
 --- !u!4 &2138335690
 Transform:
   m_ObjectHideFlags: 0
