@@ -13,6 +13,8 @@ namespace GED
         public GameObject cylinder;
         public GameObject plane;
         public GameObject quad;
+        public GameObject terrain;
+        public GameObject tree;
 
         // sets whether the recently instantiated object is a player or not.
         private bool addPlayerScript = false;
@@ -89,6 +91,30 @@ namespace GED
         {
             // instantiates a new cube at the world origin
             GameObject newObject = Instantiate(quad, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds a player script
+            if (addPlayerScript)
+                newObject.AddComponent<PlayerController>();
+
+        }
+
+        // Spawns a terrain object
+        public void SpawnTerrain()
+        {
+            // instantiates a new cube at the world origin
+            GameObject newObject = Instantiate(terrain, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds a player script
+            if (addPlayerScript)
+                newObject.AddComponent<PlayerController>();
+
+        }
+
+        // Spawns a tree
+        public void SpawnTree()
+        {
+            // instantiates a new cube at the world origin
+            GameObject newObject = Instantiate(tree, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
 
             // adds a player script
             if (addPlayerScript)
