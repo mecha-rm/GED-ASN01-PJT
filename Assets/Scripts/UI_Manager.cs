@@ -40,6 +40,7 @@ namespace GED
 
         // used to hide or show the UI
         public GameObject ui01;
+        public GameObject instructionPanel;
 
         // main camera and secondary camera
         // the original plan was to allow for the switching of displays, but instead we're using turning on and off the UI.
@@ -272,9 +273,13 @@ namespace GED
         // Update is called once per frame
         void Update()
         {
-            // swap the camera
-            if (Input.GetKeyDown(KeyCode.C))
+            // sets ui to be active
+            if (Input.GetKeyDown(KeyCode.U))
                 ui01.SetActive(!ui01.active);
+
+            // shows and hides instruction panel
+            if (Input.GetKeyDown(KeyCode.I))
+                instructionPanel.SetActive(!instructionPanel.active);
 
             // switches the camera
             // if(Input.GetKeyDown(KeyCode.C))
