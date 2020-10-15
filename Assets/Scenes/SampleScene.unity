@@ -1576,7 +1576,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &765909855
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2095,10 +2095,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraLock: 0
-  movementSpeed: 25
-  rotationSpeed: 25
-  resetPosition: {x: 0, y: 1, z: -10}
-  resetOrientation: {x: 0, y: 0, z: 0}
+  movementSpeed: {x: 20, y: 20, z: 20}
+  rotationSpeed: {x: 20, y: 20, z: 20}
 --- !u!1 &986973967
 GameObject:
   m_ObjectHideFlags: 0
@@ -3996,17 +3994,19 @@ MonoBehaviour:
     (ARROW KEYS, Page Up,
     & Page Down) - Rotate Camera
 
-    (R) - Reset Camera to Default Position
+    (T) - Reset Camera to Default Position
+
+    (R)
+    - Reset Camera to Default Orientation
 
 
-    ---
-    For Objects with a PlayerController Script Attached ---
+    --- For Objects with a PlayerController
+    Script Attached ---
 
-    (WASDQR) - Move
-    Objects (When ControlLock is Off)
+    (WASDQR) - Move Objects (When ControlLock is Off)
 
-    (Hold Right Mouse Button) - Rotate Object
-    in Mouse Direction
+    (Hold
+    Right Mouse Button) - Rotate Object in Mouse Direction
 
 
     OTHER
@@ -4904,10 +4904,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraLock: 0
-  movementSpeed: 25
-  rotationSpeed: 25
-  resetPosition: {x: 0, y: 4, z: -20}
-  resetOrientation: {x: 0, y: 0, z: 0}
+  movementSpeed: {x: 20, y: 20, z: 20}
+  rotationSpeed: {x: 20, y: 20, z: 20}
 --- !u!4 &1851332242 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4331543361933520648, guid: 169503917ebe00b46b0f3f86ea23118e, type: 3}
