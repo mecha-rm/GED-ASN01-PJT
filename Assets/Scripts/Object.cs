@@ -14,16 +14,48 @@ namespace GED
 {
     public class Object : MonoBehaviour
     {
-
+        // name
         public string name = "";
+
+        // description
         public string description = "";
-
-
         
+        // start
         void Start()
         {
+            // if the name is blank.
+            if(name == "")
+            {
+                string str = "";
+                const int CHAR_COUNT = 10;
+
+                // uses 10 characters for the name
+                for(int x = 0; x < 10; x++)
+                {
+                    // determines whether a number or letter is being used.
+                    int y = Random.Range(0, 2);
+
+                    switch(y)
+                    {
+                        case 0: // add number
+                            str += Random.Range(0, 10);
+                            break;
+
+                        case 1: // add letter
+                        default:
+                            str += (char)(Random.Range(65, 123));
+                            break;
+                    }
+                }
+
+                name = str;
+            }
+
+            // UndoRedoSystem.RecordObject(this, name);
+            UndoRedoSystem.RegisterCreatedObject(this, name);
         }
 
+        // collisions
         private void OnTriggerEnter(Collider col)
         {
         
