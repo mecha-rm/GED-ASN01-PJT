@@ -256,6 +256,8 @@ namespace GED
             if (addRigidBody)
                 newObject.AddComponent<Rigidbody>();
 
+            newObject.GetComponent<ObjectScript>().camera = cam1;
+
             
         }
 

@@ -1591,7 +1591,7 @@ RectTransform:
   m_Children:
   - {fileID: 2024133531}
   m_Father: {fileID: 825597607}
-  m_RootOrder: 23
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1666,7 +1666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9811321, g: 0.86450696, b: 0.86450696, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1722,7 +1722,7 @@ RectTransform:
   m_Children:
   - {fileID: 1527826302}
   m_Father: {fileID: 825597607}
-  m_RootOrder: 22
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1879,9 +1879,9 @@ RectTransform:
   - {fileID: 90151209}
   - {fileID: 1332892357}
   - {fileID: 880001606}
-  - {fileID: 765909855}
   - {fileID: 756953051}
   - {fileID: 1525880482}
+  - {fileID: 765909855}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4070,7 +4070,7 @@ RectTransform:
   m_Children:
   - {fileID: 1885949310}
   m_Father: {fileID: 825597607}
-  m_RootOrder: 24
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4145,7 +4145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9, g: 1, b: 0.925883, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5749,7 +5749,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Undo
+  m_Text: "Undo\u238C"
 --- !u!222 &2024133533
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6175,6 +6175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5938823aff9d26740a9753d8ccf84dbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  undoLimit: 10
 --- !u!1001 &44613139312541609
 PrefabInstance:
   m_ObjectHideFlags: 0

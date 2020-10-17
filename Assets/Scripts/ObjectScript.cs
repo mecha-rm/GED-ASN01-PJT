@@ -12,13 +12,19 @@ using UnityEngine;
 // level editor namespace
 namespace GED
 {
-    public class Object : MonoBehaviour
+    public class ObjectScript : MonoBehaviour
     {
         // name
         public string name = "";
 
         // description
         public string description = "";
+
+        // the main camera for all objects.
+        public Camera camera;
+
+        // used for undo/redo - checks to see if anything changes.
+        private Transform tform;
         
         // start
         void Start()
@@ -51,8 +57,10 @@ namespace GED
                 name = str;
             }
 
+            transform.name = name;
+            tform = transform;
             // UndoRedoSystem.RecordObject(this, name);
-            UndoRedoSystem.RegisterCreatedObject(this, name);
+            // UndoRedoSystem.RegisterCreatedObject(this, name);
         }
 
         // collisions
@@ -61,35 +69,73 @@ namespace GED
         
         }
 
-       
+        // when the mouse button is down
+        private void OnMouseDown()
+        {
+            
+        }
+
+        // when the mouse button is up
+        private void OnMouseDrag()
+        {
+            // if(Input.GetKey(KeyCode.Mouse1))
+
+            // if (Input.GetMouseButton(1)) // secondary (right) button
+            // if(Input.GetKey(KeyCode.Mouse1))
+            //{
+            //    UnityEngine.Vector3 mousePos = Input.mousePosition;
+                
+            //    if(camera != null)
+            //    {
+            //        mousePos = camera.ScreenToWorldPoint(mousePos);
+            //        mousePos -= camera.transform.position;
+            //    }
+
+            //    // mousePos = transform.TransformPoint(mousePos); // does nothing
+            //    transform.position = mousePos;
+                
+            //}
+        }
+
+        // on mouse up
+        // private void OnMouseUp()
+        // {
+        //     
+        // }
+
         //private void OnMouseDown()
         //{
         //    GameObject.Find("Cube").GetComponent<CubeScript>().AddWaypointOnLeftMouseClick(false);
-         
+
         //    offset = transform.position - (Input.mousePosition - new Vector3(Screen.width / 2.0F, Screen.height / 2.0F, 0.0F)) * 0.1F;
         //}
 
-        
+
         //private void OnMouseDrag()
         //{
         //    transform.position = (Input.mousePosition - new Vector3(Screen.width / 2.0F, Screen.height / 2.0F, 0.0F)) * 0.1F + offset;
 
-            
+
         //    t1.GetComponent<LineRenderer>().SetPosition(0, transform.position);
         //    t2.GetComponent<LineRenderer>().SetPosition(0, transform.position);
 
-          
+
         //}
 
-        
+
         //private void OnMouseUp()
         //{
         //    GameObject.Find("Cube").GetComponent<CubeScript>().AddWaypointOnLeftMouseClick(true);
         //}
 
-        
+
         void Update()
         {
+            // if something has changed.
+            // if(tform != transform)
+            // {
+            //     UndoRedoSystem.RecordAction(gameObject, transform);
+            // }
         }
     }
 }
