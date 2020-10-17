@@ -14,6 +14,9 @@ namespace GED
 {
     public class ObjectScript : MonoBehaviour
     {
+        // the user interface manager. Used for selecting objects.
+        public GameObject uiManager;
+
         // name
         public string name = "";
 
@@ -24,7 +27,8 @@ namespace GED
         public Camera camera;
 
         // used for undo/redo - checks to see if anything changes.
-        private Transform tform;
+        // the previous version of the transformation applied to the object.
+        private LogEntry preTransform;
         
         // start
         void Start()
@@ -58,7 +62,13 @@ namespace GED
             }
 
             transform.name = name;
-            tform = transform;
+
+            // copies the transform infinitely
+            preTransform.entity = gameObject;
+            preTransform.position = transform.position;
+            preTransform.rotation = transform.rotation;
+            preTransform.localScale = transform.localScale;
+
             // UndoRedoSystem.RecordObject(this, name);
             // UndoRedoSystem.RegisterCreatedObject(this, name);
         }
@@ -72,12 +82,15 @@ namespace GED
         // when the mouse button is down
         private void OnMouseDown()
         {
-            
+            // TODO: optimize for specific mouse inputs
+            uiManager.GetComponent<UI_Manager>().SetSelectedObject(gameObject); // this is now the selected object
+
         }
 
         // when the mouse button is up
         private void OnMouseDrag()
         {
+            // TODO: figure out how to drag objects.
             // if(Input.GetKey(KeyCode.Mouse1))
 
             // if (Input.GetMouseButton(1)) // secondary (right) button
@@ -128,14 +141,29 @@ namespace GED
         //    GameObject.Find("Cube").GetComponent<CubeScript>().AddWaypointOnLeftMouseClick(true);
         //}
 
+        // resets the previous transform so that it's set to the current transform.
+        public void ResetPreviousTransform()
+        {
+            preTransform.position = transform.position;
+            preTransform.rotation = transform.rotation;
+            preTransform.localScale = transform.localScale;
+        }
 
+        // update
         void Update()
         {
             // if something has changed.
-            // if(tform != transform)
-            // {
-            //     UndoRedoSystem.RecordAction(gameObject, transform);
-            // }
+            if(preTransform.position != transform.position || preTransform.rotation != transform.rotation || preTransform.localScale != transform.localScale)
+            {
+                UndoRedoSystem.RecordAction(preTransform);
+
+                // saves new values
+                preTransform.position = transform.position;
+                preTransform.rotation = transform.rotation;
+                preTransform.localScale = transform.localScale;
+
+                // tform = Instantiate(transform); // makes a copy of the transform
+            }
         }
     }
 }

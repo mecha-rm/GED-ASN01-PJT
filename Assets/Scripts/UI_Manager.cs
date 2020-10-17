@@ -53,6 +53,9 @@ namespace GED
         // adds a rigid body to the entity, which allows for gravity to take effect.
         private bool addRigidBody = false;
 
+        // the currently selected object
+        private GameObject selectedObject;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -248,6 +251,9 @@ namespace GED
         // adds components to spawned objects
         private void AddSpawnComponents(GameObject newObject)
         {
+            // gives the new object the user interface manager so that they can be selected.
+            newObject.GetComponent<ObjectScript>().uiManager = gameObject;
+
             // adds a player script
             if (addPlayerScript)
                 newObject.AddComponent<PlayerController>();
@@ -259,6 +265,13 @@ namespace GED
             newObject.GetComponent<ObjectScript>().camera = cam1;
 
             
+        }
+
+        // sets the selected object.
+        public void SetSelectedObject(GameObject entity)
+        {
+            // TODO: set up option to move object via buttons.
+            selectedObject = entity;
         }
 
         // TOGGLES //

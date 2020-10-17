@@ -2,25 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using GED;
+
+// log entry for undo/redo 
+public struct LogEntry
+{
+    public GameObject entity; // the object
+    public Vector3 position; // position
+    public Quaternion rotation; // rotation
+    public Vector3 localScale; // scale
+}
 
 // class for the undo and redo system.
 public class UndoRedoSystem : MonoBehaviour
 {
-    // log for undoing 
-    struct LogEntry
-    {
-        public GameObject entity; // the object
-        public Transform transform; // transformation of object that was applied
-    }
-
     // the undo list. When an action is made, an undo entry is logged.
     // when an action occurs, it puts an item on the undo list.
     // this is treated as a stack, but is a linked list since items need to be deleted if the undo list surpasses a specific size.
-    private static LinkedList<LogEntry> undoList;
+    private static LinkedList<LogEntry> undoList = new LinkedList<LogEntry>();
 
     // a redo stack. When an item is pulled off of the undo stack, it is placed on the redo stack.
     // if something new is placed on the undo stack, then the redo stack is cleared.
-    private static Stack<LogEntry> redoStack;
+    private static Stack<LogEntry> redoStack = new Stack<LogEntry>();
 
     // the undo limit for the undo-redo system.
     public static int undoLimit = 10;
@@ -47,12 +50,25 @@ public class UndoRedoSystem : MonoBehaviour
     // }
 
     // records the object and its transformation.
-    public static void RecordAction(GameObject entity, Transform tform)
+    public static void RecordAction(GameObject entity, Vector3 position, Quaternion rotation, Vector3 scale)
     {
         LogEntry entry;
         entry.entity = entity;
-        entry.transform = tform;
+        entry.position = position;
+        entry.rotation = rotation;
+        entry.localScale = scale;
 
+        // undoList.AddFirst(entry);
+        // 
+        // // TODO: work out how to track object creation and destruction.
+        // redoStack.Clear();
+
+        RecordAction(entry);
+    }
+
+    // records an action from a log entry
+    public static void RecordAction(LogEntry entry)
+    {
         undoList.AddFirst(entry);
 
         // TODO: work out how to track object creation and destruction.
@@ -73,35 +89,32 @@ public class UndoRedoSystem : MonoBehaviour
         LogEntry e1; // the entry that will be at the top of the undo "stack" and will be the current action.
 
         e0 = undoList.First.Value; // gets the first entry
-        e1 = undoList.First.Value; // gets the first entry again
-        e1.transform = e0.entity.transform; // saves the object's current transform
+        // e1.entity = e0.entity; // gets the first entry again (this doesn't mean anything)
+
+        // steps
+        // 1 - get transformation information from object, and save it to e1's PRS variables.
+        // 2 - override object transformation information with data in e0's PRS variables
+        // 3 - set e0's PRS variables to the PRS variables in e1
 
         // swaps transform values between game object and attached Transform object.
         // e1 gets the values from the object on e0. This is the same object that's on e1.
-        e1.transform.position = e0.entity.transform.position;
-        e1.transform.rotation = e0.entity.transform.rotation;
-        e1.transform.localScale = e0.entity.transform.localScale;
+        e1.position = e0.entity.transform.position; // copies the object's current position
+        e1.rotation = e0.entity.transform.rotation; // copies the object's current rotation
+        e1.localScale = e0.entity.transform.localScale; // copies the object's local scale.
 
         // e0's object is overriden with the values of e0's transform.
-        e0.entity.transform.position = e0.transform.position;
-        e0.entity.transform.rotation = e0.transform.rotation;
-        e0.entity.transform.localScale = e0.transform.localScale;
+        e0.entity.transform.position = e0.position;
+        e0.entity.transform.rotation = e0.rotation;
+        e0.entity.transform.localScale = e0.localScale;
 
         // e0's transform gets given the values from e1's transform
-        e0.transform.position = e1.transform.position;
-        e0.transform.rotation = e1.transform.rotation;
-        e0.transform.localScale = e1.transform.localScale;
+        e0.position = e1.position;
+        e0.rotation = e1.rotation;
+        e0.localScale = e1.localScale;
 
         undoList.RemoveFirst(); // removes first entry in the undo list.
         redoStack.Push(e0); // puts the entry on the redo stack.
-
-        // e1 = undoList.First.Value; // gets new entry, which is now the current entry.
-
-        // maybe track the difference in one transformation to the next.
-        //
-        // e0.entity.transform.position = e1.entity.transform.position;
-        // e0.entity.transform.localScale = e1.entity.transform.localScale;
-        // e0.entity.transform.rotation = e1.entity.transform.rotation;
+        e0.entity.GetComponent<ObjectScript>().ResetPreviousTransform(); // resets the previous transformation to current transform 
     }
 
     // redos the last action.
@@ -117,27 +130,33 @@ public class UndoRedoSystem : MonoBehaviour
         LogEntry e1; // the entry that will be at the top of the redo "stack" and will be the current action.
 
         e0 = redoStack.Peek(); // gets the first entry
-        e1 = redoStack.Peek(); // gets the first entry again
-        e1.transform = e0.entity.transform; // saves the object's current transform
+        e1.entity = e0.entity; // gets the first entry again
+                               // e1.entity = e0.entity; // gets the first entry again (this doesn't mean anything)
+
+        // steps
+        // 1 - get transformation information from object, and save it to e1's PRS variables.
+        // 2 - override object transformation information with data in e0's PRS variables
+        // 3 - set e0's PRS variables to the PRS variables in e1
 
         // swaps transform values between game object and attached Transform object.
         // e1 gets the values from the object on e0. This is the same object that's on e1.
-        e1.transform.position = e0.entity.transform.position;
-        e1.transform.rotation = e0.entity.transform.rotation;
-        e1.transform.localScale = e0.entity.transform.localScale;
+        e1.position = e0.entity.transform.position; // copies the object's current position
+        e1.rotation = e0.entity.transform.rotation; // copies the object's current rotation
+        e1.localScale = e0.entity.transform.localScale; // copies the object's local scale.
 
         // e0's object is overriden with the values of e0's transform.
-        e0.entity.transform.position = e0.transform.position;
-        e0.entity.transform.rotation = e0.transform.rotation;
-        e0.entity.transform.localScale = e0.transform.localScale;
+        e0.entity.transform.position = e0.position;
+        e0.entity.transform.rotation = e0.rotation;
+        e0.entity.transform.localScale = e0.localScale;
 
         // e0's transform gets given the values from e1's transform
-        e0.transform.position = e1.transform.position;
-        e0.transform.rotation = e1.transform.rotation;
-        e0.transform.localScale = e1.transform.localScale;
+        e0.position = e1.position;
+        e0.rotation = e1.rotation;
+        e0.localScale = e1.localScale;
 
         redoStack.Pop(); // removes first entry in the undo list.
         undoList.AddFirst(e0); // puts the entry on the redo stack.
+        e0.entity.GetComponent<ObjectScript>().ResetPreviousTransform(); // resets the previous transformation to current transform 
     }
 
     // Update is called once per frame
