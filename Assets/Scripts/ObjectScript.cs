@@ -61,7 +61,8 @@ namespace GED
                 name = str;
             }
 
-            transform.name = name;
+            // leave them seperate
+            // transform.name = name;
 
             // copies the transform infinitely
             preTransform.entity = gameObject;

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Factory Design Pattern - Spawner
-public class Spawner : MonoBehaviour
+public class SpawnerScript : MonoBehaviour
 {
     public List<GameObject> entities = new List<GameObject>();
 
@@ -52,7 +52,7 @@ public class Spawner : MonoBehaviour
     public void Spawn()
     {
         // index number of option
-        if(options.value <= entities.Count)
+        if(entities.Count != 0 && options.value <= entities.Count)
         {
             GameObject newObject = Instantiate(entities[options.value]);
 

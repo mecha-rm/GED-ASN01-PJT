@@ -30,6 +30,9 @@ public class UndoRedoSystem : MonoBehaviour
     // if something new is placed on the undo stack, then the redo stack is cleared.
     private static Stack<LogEntry> redoStack = new Stack<LogEntry>();
 
+    // a game object used to keep track of deleted objects
+    // private GameObject instList;
+
     // the undo limit for the undo-redo system.
     public static int undoLimit = 10; // TODO: not implemented yet
 
@@ -39,6 +42,7 @@ public class UndoRedoSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
     }
 
     // records the object and the action comitted. (TODO: make static)
