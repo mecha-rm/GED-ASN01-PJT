@@ -43,6 +43,7 @@ public class StateMachine : MonoBehaviour
 
     // sets the state via its numerical value (cannot be set to -1)
     // state will not change if integer identifier is invalid
+    // the observers will still be notified, even if the state did not change.
     public void SetState(int newState)
     {
         if (newState >= 0)

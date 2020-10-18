@@ -1,6 +1,7 @@
 # GED-ASN01-PJT
 Assignment 1 for Game Engine Design and Implementation, which is a group assignment.
 
+- PART 1 -
 The instructions for the game are shown below.
 *********************
 --- KEYBOARD/MOUSE CONTROLS ---
@@ -23,3 +24,15 @@ To add an object, press the buttons on the UI (only when UI is visible).
 IsPlayer and HasRigidBody when active apply a PlayerController Script and RigidBody respectively to an object upon it being spawned.
 CameraLock when active locks the Camera controls. PlayerObjects and the cameras both use WASDQE.
 To lock the controls on a PlayerObject, select that object and use the "controlLock" bool in the inspector.
+
+
+- PART 2 -
+Design Patterns
+* Command Design Pattern:
+* Factory Design Pattern:
+* Optional Design Pattern:
+	- State Machine:
+	- Observer (Bonus):
+
+The example for state machines has a piece of text that shows which object is selected.
+This is finicky due to the hitgeometry, and other than this label it doesn't do anything.

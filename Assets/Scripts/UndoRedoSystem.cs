@@ -187,15 +187,19 @@ public class UndoRedoSystem : MonoBehaviour
     // update is called once per frame
     void Update()
     {
-        // test inputs
-        // if (Input.GetKeyDown(KeyCode.B))
-        // {
-        //     UndoAction();
-        // }
-        // if (Input.GetKeyDown(KeyCode.N))
-        // {
-        //     RedoAction();
-        // }
+        // CTRL + Z undo shortcut and CTRL + Y redo shortcut
+        // if the left or right control keys are pressed.
+        if((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
+        {
+            if(Input.GetKeyDown(KeyCode.Z)) // undo
+            {
+                UndoAction();
+            }
+            else if(Input.GetKeyDown(KeyCode.Y)) // redo
+            {
+                RedoAction();
+            }
+        }
 
     }
 }

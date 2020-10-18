@@ -65,6 +65,12 @@ namespace GED
 
         }
 
+        // mouse has clicked on the UI
+        private void OnMouseDown()
+        {
+            selectedObject = null;
+        }
+
         // SPAWNERS //
         // 3D OBJECTS //
         // Spawns a cube
@@ -207,7 +213,7 @@ namespace GED
         {
             // instantiates a new cube at the world origin
             GameObject newLight = Instantiate(direcLight, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
-            
+
             // adds the spawn components.
             AddSpawnComponents(newLight);
         }
@@ -278,7 +284,7 @@ namespace GED
 
             newObject.GetComponent<ObjectScript>().camera = cam1;
 
-            
+
         }
 
         // sets the selected object.
@@ -286,6 +292,13 @@ namespace GED
         {
             // TODO: set up option to move object via buttons.
             selectedObject = entity;
+            gameObject.GetComponent<StateMachine>().SetState(1);
+        }
+
+        // gets the selected object
+        public GameObject GetSelectedObject()
+        {
+            return selectedObject;
         }
 
         // TOGGLES //
