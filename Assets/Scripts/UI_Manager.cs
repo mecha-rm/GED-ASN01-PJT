@@ -30,6 +30,9 @@ namespace GED
         // public GameObject tilemap;
         public GameObject grid;
 
+        // custom
+        public GameObject spawner;
+
         // lights
         public GameObject direcLight;
         public GameObject pointLight;
@@ -185,6 +188,17 @@ namespace GED
 
             // adds the spawn components.
             AddSpawnComponents(newObject);
+        }
+
+        // CUSTOM
+        // spawns a custom spawner
+        public void SpawnSpawner()
+        {
+            // instantiates a new object at the world origin
+            GameObject newObject = Instantiate(spawner, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1));
+
+            // adds the spawn components.
+            // AddSpawnComponents(newObject);
         }
 
         // LIGHTS //

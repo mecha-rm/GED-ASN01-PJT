@@ -4,10 +4,15 @@ using UnityEngine;
 using UnityEditor;
 using GED;
 
+// Command Design Pattern - Undo/Redo
 // log entry for undo/redo 
 public struct LogEntry
 {
     public GameObject entity; // the object
+
+    public bool alive; // the object is active. If false, it means the object was deleted. // TODO: not implemented yet
+    public bool active; // the object is active (i.e. visible) // TODO: this doesn't work since the update
+
     public Vector3 position; // position
     public Quaternion rotation; // rotation
     public Vector3 localScale; // scale
@@ -26,7 +31,7 @@ public class UndoRedoSystem : MonoBehaviour
     private static Stack<LogEntry> redoStack = new Stack<LogEntry>();
 
     // the undo limit for the undo-redo system.
-    public static int undoLimit = 10;
+    public static int undoLimit = 10; // TODO: not implemented yet
 
     // NOTE: the built-in undo/redo system does not allow for undoing and redoing deletions.
     // you likely aren't supposed to do that.
@@ -50,10 +55,14 @@ public class UndoRedoSystem : MonoBehaviour
     // }
 
     // records the object and its transformation.
-    public static void RecordAction(GameObject entity, Vector3 position, Quaternion rotation, Vector3 scale)
+    public static void RecordAction(GameObject entity, bool alive, bool active, Vector3 position, Quaternion rotation, Vector3 scale)
     {
+        // records the action
         LogEntry entry;
         entry.entity = entity;
+        entry.alive = alive;
+        entry.active = active;
+
         entry.position = position;
         entry.rotation = rotation;
         entry.localScale = scale;
@@ -98,16 +107,22 @@ public class UndoRedoSystem : MonoBehaviour
 
         // swaps transform values between game object and attached Transform object.
         // e1 gets the values from the object on e0. This is the same object that's on e1.
+        // e1.alive;
+        e1.active = e0.entity.active;
         e1.position = e0.entity.transform.position; // copies the object's current position
         e1.rotation = e0.entity.transform.rotation; // copies the object's current rotation
         e1.localScale = e0.entity.transform.localScale; // copies the object's local scale.
 
         // e0's object is overriden with the values of e0's transform.
+        // e0.entity.alive;
+        e0.entity.SetActive(e0.active);
         e0.entity.transform.position = e0.position;
         e0.entity.transform.rotation = e0.rotation;
         e0.entity.transform.localScale = e0.localScale;
 
         // e0's transform gets given the values from e1's transform
+        // e0.alive
+        e0.active = e1.active;
         e0.position = e1.position;
         e0.rotation = e1.rotation;
         e0.localScale = e1.localScale;
@@ -131,7 +146,7 @@ public class UndoRedoSystem : MonoBehaviour
 
         e0 = redoStack.Peek(); // gets the first entry
         e1.entity = e0.entity; // gets the first entry again
-                               // e1.entity = e0.entity; // gets the first entry again (this doesn't mean anything)
+        // e1.entity = e0.entity; // gets the first entry again (this doesn't mean anything)
 
         // steps
         // 1 - get transformation information from object, and save it to e1's PRS variables.
@@ -140,16 +155,22 @@ public class UndoRedoSystem : MonoBehaviour
 
         // swaps transform values between game object and attached Transform object.
         // e1 gets the values from the object on e0. This is the same object that's on e1.
+        // e1.alive;
+        e1.active = e0.entity.active;
         e1.position = e0.entity.transform.position; // copies the object's current position
         e1.rotation = e0.entity.transform.rotation; // copies the object's current rotation
         e1.localScale = e0.entity.transform.localScale; // copies the object's local scale.
 
         // e0's object is overriden with the values of e0's transform.
+        // e0.alive;
+        e0.entity.SetActive(e0.entity.active);
         e0.entity.transform.position = e0.position;
         e0.entity.transform.rotation = e0.rotation;
         e0.entity.transform.localScale = e0.localScale;
 
         // e0's transform gets given the values from e1's transform
+        // e0.alive;
+        e0.active = e1.active;
         e0.position = e1.position;
         e0.rotation = e1.rotation;
         e0.localScale = e1.localScale;
@@ -159,7 +180,7 @@ public class UndoRedoSystem : MonoBehaviour
         e0.entity.GetComponent<ObjectScript>().ResetPreviousTransform(); // resets the previous transformation to current transform 
     }
 
-    // Update is called once per frame
+    // update is called once per frame
     void Update()
     {
         // test inputs

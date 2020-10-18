@@ -65,6 +65,9 @@ namespace GED
 
             // copies the transform infinitely
             preTransform.entity = gameObject;
+            preTransform.alive = true;
+            preTransform.active = gameObject.active;
+
             preTransform.position = transform.position;
             preTransform.rotation = transform.rotation;
             preTransform.localScale = transform.localScale;
@@ -153,11 +156,14 @@ namespace GED
         void Update()
         {
             // if something has changed.
-            if(preTransform.position != transform.position || preTransform.rotation != transform.rotation || preTransform.localScale != transform.localScale)
+            if( preTransform.active != gameObject.active || 
+                preTransform.position != transform.position || preTransform.rotation != transform.rotation || preTransform.localScale != transform.localScale)
             {
                 UndoRedoSystem.RecordAction(preTransform);
 
                 // saves new values
+                // preTransform.alive;
+                preTransform.active = gameObject.active;
                 preTransform.position = transform.position;
                 preTransform.rotation = transform.rotation;
                 preTransform.localScale = transform.localScale;
