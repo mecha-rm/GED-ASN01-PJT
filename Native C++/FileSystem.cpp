@@ -1,3 +1,6 @@
+// resource:
+// http://www.cplusplus.com/doc/tutorial/files/
+
 #include "FileSystem.h"
 #include <iostream>
 
@@ -17,10 +20,12 @@ FileSystem::~FileSystem()
 }
 
 // open for reading
-bool FileSystem::OpenForReading(const char* filePath)
+bool FileSystem::OpenForReading(char* filePath)
 {
-    return OpenForReading(std::string(filePath));
+    std::string str = std::string(filePath);
     delete[] filePath;
+    return OpenForReading(str);
+    
 }
 
 // opens a file for reading
@@ -34,7 +39,7 @@ bool FileSystem::OpenForReading(std::string filePath)
         return false;
 
     // opens the file for reading
-    file.open(filePath, std::ios::in);
+    file.open(filePath, std::ios::in | std::ios::binary);
 
     // if the file is not open, then a 'false' is returned. 
     if (!file)
@@ -51,15 +56,19 @@ bool FileSystem::OpenForReading(std::string filePath)
 }
 
 // opens a file for writing.
-bool FileSystem::OpenForWriting(const char* filePath)
+bool FileSystem::OpenForWriting(char* filePath)
 {
-    return OpenForWriting(filePath, false);
+    std::string str = std::string(filePath);
+    delete[] filePath;
+    return OpenForWriting(str, false);
 }
 
 // open for writing
-bool FileSystem::OpenForWriting(const char* filePath, bool createFile)
+bool FileSystem::OpenForWriting(char* filePath, bool createFile)
 {
-    return OpenForWriting(std::string(filePath), createFile);
+    std::string str = std::string(filePath);
+    delete[] filePath;
+    return OpenForWriting(str, createFile);
 }
 
 // opens a file for writing.
@@ -82,7 +91,7 @@ bool FileSystem::OpenForWriting(std::string filePath, bool createFile)
     // checks if the file exists
     {
         // opens file for reading to see if it exists
-        file.open(filePath, std::ios::in);
+        file.open(filePath, std::ios::in | std::ios::binary);
 
         if (!file && !createFile) // if the file cannot be used, and a new file should not be created.
         {
@@ -95,7 +104,7 @@ bool FileSystem::OpenForWriting(std::string filePath, bool createFile)
     }
 
     // opens the file for writing.
-    file.open(filePath, std::ios::out);
+    file.open(filePath, std::ios::out | std::ios::binary);
 
     // if the file is not open, then a 'false' is returned. 
     if (!file) // file failed to open
@@ -107,7 +116,7 @@ bool FileSystem::OpenForWriting(std::string filePath, bool createFile)
             file.close();
 
             // re-opens the file and clears out all contents.
-            file.open(filePath, std::ios::out);
+            file.open(filePath, std::ios::out | std::ios::binary);
             ClearFileContents(); 
         }
         else
@@ -127,8 +136,27 @@ bool FileSystem::OpenForWriting(std::string filePath, bool createFile)
     return true;
 }
 
+// makes a copy of a string and passes it as a char array
+char* FileSystem::StringToCharArray(const std::string& str)
+{
+    // allocate space
+    char* chs = new char[str.length()];
+
+    // copies the memory
+    memcpy(chs, str.c_str(), sizeof(char) * str.length());
+
+    // return
+    return chs;
+}
+
 // returns the file path
-const char* FileSystem::GetFilePath() const
+std::string FileSystem::GetFilePath() const
+{
+    return filePath;
+}
+
+// returns the file path
+const char* FileSystem::GetFilePathAsCString() const
 {
     return filePath.c_str();
 }
@@ -139,8 +167,14 @@ std::string FileSystem::GetFilePathAsString() const
     return filePath;
 }
 
+// returns file path as a copy
+char* FileSystem::GetFilePathAsCharArray() const
+{
+    return StringToCharArray(filePath);
+}
+
 // checks if the file is open.
-bool FileSystem::FileOpen() const
+bool FileSystem::IsFileOpen() const
 {
     return file.is_open();
 }
@@ -157,8 +191,20 @@ bool FileSystem::IsWritable() const
     return (mode == 2);
 }
 
+// gets the record size
+int FileSystem::GetRecordSize() const
+{
+    return recordSize;
+}
+
+// sets the record size
+void FileSystem::SetRecordSize(int size)
+{
+    recordSize = size;
+}
+
 // reads a line
-char* FileSystem::ReadLine(int size, int seekg)
+char* FileSystem::ReadRecord(int size, int seekg)
 {
     // size is invalid
     if (size <= 0)
@@ -166,7 +212,7 @@ char* FileSystem::ReadLine(int size, int seekg)
 
     // seek line
     if (seekg >= 0)
-        file.seekg(seekg);
+        file.seekg(seekg, file.beg);
 
     char* data = new char[size];
 
@@ -175,13 +221,13 @@ char* FileSystem::ReadLine(int size, int seekg)
 
     // saves the data
     std::string str = std::string(data);
-    lines.push_back(str);
+    records.push_back(str);
 
     delete[] data;
 }
 
 // writes a line
-void FileSystem::WriteLine(char* line, int size, int seekp)
+void FileSystem::WriteRecord(char* line, int size, int seekp)
 {
     // size is invalid
     if (size <= 0)
@@ -196,59 +242,59 @@ void FileSystem::WriteLine(char* line, int size, int seekp)
 
     // saves the data
     std::string str = std::string(line);
-    lines.push_back(str);
+    records.push_back(str);
 
     delete[] line;
 }
 
 // gets the line count
-int FileSystem::GetLineCount() const
+int FileSystem::GetRecordCount() const
 {
-    return lines.size();
+    return records.size();
 }
 
 // adds a line to the array
-void FileSystem::AddLine(char* arr, const int SIZE)
+void FileSystem::InsertRecord(char* arr, const int SIZE)
 {
     std::string str = std::string(arr);
     str.resize(SIZE); // remove garbage characters
-    lines.push_back(str);
+    records.push_back(str);
     delete[] arr;
 }
 
 // adds a line at hte current index
-void FileSystem::AddLine(char* arr, const int SIZE, int index)
+void FileSystem::AddRecord(char* arr, const int SIZE, int index)
 {
     std::string str = std::string(arr);
     str.resize(SIZE); // remove garbage characters
 
     if (index < 0) // index is negative
     {
-        lines.insert(lines.begin(), str);
+        records.insert(records.begin(), str);
     }
-    else if (index >= lines.size()) // index is greater than or equal to the amount of lines.
+    else if (index >= records.size()) // index is greater than or equal to the amount of lines.
     {
-        lines.push_back(str);
+        records.push_back(str);
     }
     else // insert at provided index
     {
-        lines.insert(lines.begin() + index, str);
+        records.insert(records.begin() + index, str);
     }
 
     delete[] arr;
 }
 
 // removes a line
-void FileSystem::RemoveLine(char* arr)
+void FileSystem::RemoveRecord(char* arr)
 {
     std::string str = std::string(arr);
     
     // finds value and deletes it.
-    for (int i = 0; i < lines.size(); i++)
+    for (int i = 0; i < records.size(); i++)
     {
-        if (lines[i] == str) // line found
+        if (records[i] == str) // line found
         {
-            lines.erase(lines.begin() + i); // removed 
+            records.erase(records.begin() + i); // removed 
             break; // breaks out of loop
         }
     }
@@ -257,40 +303,84 @@ void FileSystem::RemoveLine(char* arr)
 }
 
 // removes line based on index
-void FileSystem::RemoveLine(int index)
+void FileSystem::RemoveRecord(int index)
 {
     // out of bounds
-    if (index >= 0 && index < lines.size())
-        lines.erase(lines.begin() + index);
+    if (index >= 0 && index < records.size())
+        records.erase(records.begin() + index);
+}
+
+// returns record as a string
+std::string FileSystem::GetRecord(int index) const
+{
+    if (index >= 0 && index < records.size())
+        return records[index];
+
+    return "";
 }
 
 // gets the line at the provided index
-const char* FileSystem::GetLine(int index) const
+const char* FileSystem::GetRecordAsCString(int index) const
 {
-    return (index >= 0 && index < lines.size()) ? lines[index].c_str() : "";
+    return (index >= 0 && index < records.size()) ? records[index].c_str() : "";
 }
 
 // returns line as string
-std::string FileSystem::GetLineAsString(int index)
+std::string FileSystem::GetRecordAsString(int index) const
 {
-    return (index >= 0 && index < lines.size()) ? lines[index] : "";
+    return (index >= 0 && index < records.size()) ? records[index] : "";
+}
+
+// returns the records as a char array
+char* FileSystem::GetRecordAsCharArray(int index) const
+{
+    if (index >= 0 && index < records.size())
+        return FileSystem::StringToCharArray(records[index]);
+    else
+        return nullptr;
 }
 
 // reads all lines
-void FileSystem::ReadAllLines()
+void FileSystem::LoadAllRecords()
 {
     // if the file isn't open, or there's something wrong with reading from it.
-    if (!file.is_open() || !file || mode != 1)
+    if (!file.is_open() || !file || mode != 1 || recordSize <= 0)
         return;
 
     std::string line; // line variable
 
-    lines.clear(); // clears out all existing lines
+    records.clear(); // clears out all existing lines
     file.seekg(std::ios::beg); // next character to be gotten
 
-    while (std::getline(file, line)) // loops through all lines
+    
+    // gets all lines (old)
+    // while (std::getline(file, line)) // loops through all lines
+    // {
+    //     lines.push_back(line); // gets the line
+    // }
+
+    // while you are not at the end of the file.
+    while (!file.eof())
     {
-        lines.push_back(line); // gets the line
+        // variables
+        char* arr = new char[recordSize];
+        std::string str = "";
+
+        // read data, and save it to string
+        file.read(arr, recordSize);
+        str = std::string(arr);
+
+        str.resize(recordSize); // get rid of garbage data
+
+        // int nullIndex = str.find(" ");
+        // if (nullIndex != std::string::npos) // there are null termination characters to get rid of.
+        //     str.resize(nullIndex); // removes all null characters 
+
+        // save to list and delete data
+        if(!str.empty())
+            records.push_back(str);
+
+        delete[] arr;
     }
 
     // returns back to start of file.
@@ -298,27 +388,53 @@ void FileSystem::ReadAllLines()
 }
 
 // writes all lines in a file. This clears all previous contents.
-void FileSystem::WriteAllLines()
+void FileSystem::SaveAllRecords()
 {
     // file isn't open, it's invalid, or it's not in write mode.
     if (!file.is_open() || !file || mode != 2)
+        return;
+
+    // no lines available
+    if (records.empty())
         return;
     
     // clears out all file contents
     ClearFileContents();
 
+    // record size has not been set.
+    if (recordSize <= 0)
+    {
+        // finds the largest record
+        int largestRecord = 0;
+
+        // gets the largest record size
+        for (int i = 0; i < records.size(); i++)
+            largestRecord = records[i].length();
+
+        // sets as record size
+        recordSize = largestRecord;
+    }
+
     // writes all lines in file
-    for (int i = 0; i < lines.size(); i++)
+    for (int i = 0; i < records.size(); i++)
     {
         // std::string str = lines[i] + "\n"; // add new line character, which increases char count by 1.
         // 
         // file.write(str.c_str(), str.size());
 
-        file << lines[i];
+        // original
+        // file << lines[i];
+        // 
+        // // the final line shouldn't start a new line
+        // if(i + 1 < lines.size())
+        //     file << "\n";
 
-        // the final line shouldn't start a new line
-        if(i + 1 < lines.size())
-            file << "\n";
+        // new - resize line so that each record is of the same size
+        // lines.resize(recordSize); // fills with null characters ('\0') automatically, which isn't what we want.
+        records[i].resize(recordSize, ' '); // fill with spaces
+
+        // file << lines[i];
+        file.write(records[i].c_str(), recordSize);
     }
 
 }
@@ -335,10 +451,10 @@ void FileSystem::ClearFileContents()
     switch (mode)
     {
     case 1: // reading
-        file.open(filePath, std::ios::in | std::ios::trunc);
+        file.open(filePath, std::ios::in | std::ios::binary | std::ios::trunc);
         break;
     case 2: // writing
-        file.open(filePath, std::ios::out | std::ios::trunc);
+        file.open(filePath, std::ios::out | std::ios::binary | std::ios::trunc);
         break;
     default:
         mode = 0; // mode wasn't set
@@ -346,9 +462,9 @@ void FileSystem::ClearFileContents()
 }
 
 // clears out all lines
-void FileSystem::ClearAllLines()
+void FileSystem::ClearAllRecords()
 {
-    lines.clear();
+    records.clear();
 }
 
 // closes the file.

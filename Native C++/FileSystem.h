@@ -20,17 +20,17 @@ public:
 	~FileSystem();
 	
 	// open for reading
-	bool OpenForReading(const char* filePath);
+	bool OpenForReading(char* filePath);
 
 	// open the file for reading. If the file is currently open, it is closed.
 	// if no file exists, 'false' is returned.
 	bool OpenForReading(std::string filePath);
 
 	// open for writing. No file is generated if it doesn't exist.
-	bool OpenForWriting(const char* filePath);
+	bool OpenForWriting(char* filePath);
 
 	// open for writing. Open to create the file if it doesn't exist yet.
-	bool OpenForWriting(const char* filePath, bool createFile);
+	bool OpenForWriting(char* filePath, bool createFile);
 
 	// opens a file for writing.
 	bool OpenForWriting(std::string filePath);
@@ -40,14 +40,23 @@ public:
 	// if 'createFile' is set to 'true', an empty file is made at the provided location if it cannot be foun.
 	bool OpenForWriting(std::string filePath, bool createFile);
 
+	// makes a copy of a string and passes it as a char array.
+	static char* StringToCharArray(const std::string& str);
+
+	// returns the file path.
+	std::string GetFilePath() const;
+
 	// returns the file path
-	const char* GetFilePath() const;
+	const char* GetFilePathAsCString() const;
 
 	// gets the file path as a string
 	std::string GetFilePathAsString() const;
 
+	// gets the file path. This actually allocates non-constant data to do so.
+	char* GetFilePathAsCharArray() const;
+
 	// returns 'true' if the file is currently open.
-	bool FileOpen() const;
+	bool IsFileOpen() const;
 
 	// returns 'true' if the file is open and is readable.
 	bool IsReadable() const;
@@ -55,46 +64,61 @@ public:
 	// returns 'ture' if the file is open and is writable.
 	bool IsWritable() const;
 
+	// returns the record size (in bytes)
+	int GetRecordSize() const;
+
+	// sets the record size (in bytes).
+	// this is used to determine how large each record is.
+	// if not set, the largest record will serve as the size.
+	void SetRecordSize(int size);
+
 	// Record, WriteLine, and ReadLine functions will likely be deleted.
 
 	// gets a line from the 
 	// char[] GetLine(int index);
 
 	// returns the line count.
-	int GetLineCount() const;
+	int GetRecordCount() const;
 
 	// adds a line to be written to the file.
-	// this deletes the ch
-	void AddLine(char* arr, const int SIZE);
+	// if the line length exceeds that of the record size, it is truncated upon being written.
+	// set record size to 0 or less to have the record size be set to that of the longest record.
+	void InsertRecord(char* arr, const int SIZE);
 
 	// adds a line at the current index. 
 	// if the index is less than 0, then it's placed at the start of the list.
 	// if the index is greater than the amount of items in the list, it is placed at the end of the list.
-	void AddLine(char* arr, const int SIZE, int index);
+	void AddRecord(char* arr, const int SIZE, int index);
 
 	// removes a line based on its string
-	void RemoveLine(char* arr);
+	void RemoveRecord(char* arr);
 
 	// removes a line based on its index
-	void RemoveLine(int index);
+	void RemoveRecord(int index);
+
+	// returns the file path as a string
+	std::string GetRecord(int index) const;
 
 	// returns the line
-	const char* GetLine(int index) const;
+	const char* GetRecordAsCString(int index) const;
 
 	// returns the line as a string. This cannot be used as a DLL, since this data type does not transfer over.
-	std::string GetLineAsString(int index);
+	std::string GetRecordAsString(int index) const;
+
+	// returns the record as a char array
+	char* GetRecordAsCharArray(int index) const;
 
 	// reads in all lines, saving them to variables. These lines can then be read in.
-	void ReadAllLines();
+	void LoadAllRecords();
 
 	// writes all lines for the file system. This clears all previous contents.
-	void WriteAllLines();
+	void SaveAllRecords();
 
 	// clears out all file contents. This does not clear existing lines.
 	void ClearFileContents();
 
 	// clears out all line data
-	void ClearAllLines();
+	void ClearAllRecords();
 
 	// closes the file
 	void CloseFile();
@@ -106,17 +130,17 @@ public:
 
 private:
 	// reads a line received from the file directly.
-	char* ReadLine(int size, int seekg);
+	char* ReadRecord(int size, int seekg);
 
 	// saves a line to be written to the file.
 	// this does not actually write the line. Call WriteAllLines to write all lines to the files.
-	void WriteLine(char* line, int size, int seekp);
+	void WriteRecord(char* line, int size, int seekp);
 
 	// keeps track of mode the file is in (0 = none, 1 = reading, 2 = writing)
 	int mode = 0;
 
 	// record size
-	int recordSize = 1024;
+	int recordSize = 0;
 
 	// file name
 	std::string filePath = "";
@@ -125,7 +149,7 @@ private:
 	std::fstream file;
 
 	// vector of lines for the file
-	std::vector<std::string> lines;
+	std::vector<std::string> records;
 
 protected:
 };
