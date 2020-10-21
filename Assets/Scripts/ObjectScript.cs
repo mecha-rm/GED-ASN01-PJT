@@ -66,15 +66,40 @@ namespace GED
 
             // copies the transform infinitely
             preTransform.entity = gameObject;
-            preTransform.alive = true;
+            preTransform.type = 1;
             preTransform.active = gameObject.active;
 
             preTransform.position = transform.position;
             preTransform.rotation = transform.rotation;
             preTransform.localScale = transform.localScale;
 
+            // object was created this iteration.
+            UndoRedoSystem.RecordAction(preTransform);
+            // preTransform.type = 0;
+
+            // BinaryFormatter converter = new BinaryFormatter();
+            // MemoryStream mStream = new MemoryStream();
+            // 
+            // converter.Serialize(mStream, entity);
+            // return mStream.ToArray();
+
             // UndoRedoSystem.RecordObject(this, name);
             // UndoRedoSystem.RegisterCreatedObject(this, name);
+        }
+
+        // destructor
+        private void OnDestroy()
+        {
+            // saves new values - no creation or destruction this frame
+            // preTransform.entity;
+            // preTransform.type = -1;
+            // preTransform.active = gameObject.active;
+            // preTransform.position = transform.position;
+            // preTransform.rotation = transform.rotation;
+            // preTransform.localScale = transform.localScale;
+            // 
+            // // records the action
+            // UndoRedoSystem.RecordAction(preTransform);
         }
 
         // collisions
@@ -87,6 +112,7 @@ namespace GED
         private void OnMouseDown()
         {
             // TODO: optimize for specific mouse inputs
+            // this doesn't work too well.
             uiManager.GetComponent<UI_Manager>().SetSelectedObject(gameObject); // this is now the selected object
 
         }
@@ -163,7 +189,7 @@ namespace GED
                 UndoRedoSystem.RecordAction(preTransform);
 
                 // saves new values
-                // preTransform.alive;
+                preTransform.type = 0; // no creation or destruction this frame
                 preTransform.active = gameObject.active;
                 preTransform.position = transform.position;
                 preTransform.rotation = transform.rotation;

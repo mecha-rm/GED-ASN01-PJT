@@ -8,9 +8,11 @@ using GED;
 // log entry for undo/redo 
 public struct LogEntry
 {
+    // if alive is false, then entity
     public GameObject entity; // the object
 
-    public bool alive; // the object is active. If false, it means the object was deleted. // TODO: not implemented yet
+    // -1 = deletion entry, 0 = transformation data, 1 = activation entry
+    public int type; // the functionality was not completed in time
     public bool active; // the object is active (i.e. visible) // TODO: this doesn't work since the update
 
     public Vector3 position; // position
@@ -21,6 +23,10 @@ public struct LogEntry
 // class for the undo and redo system.
 public class UndoRedoSystem : MonoBehaviour
 {
+    // parents for undo and redo
+    // public static GameObject undoParent = new GameObject(); // create empty object
+    // public static GameObject redoParent = new GameObject(); // create empty object
+
     // the undo list. When an action is made, an undo entry is logged.
     // when an action occurs, it puts an item on the undo list.
     // this is treated as a stack, but is a linked list since items need to be deleted if the undo list surpasses a specific size.
@@ -34,7 +40,7 @@ public class UndoRedoSystem : MonoBehaviour
     // private GameObject instList;
 
     // the undo limit for the undo-redo system.
-    public static int undoLimit = 10; // TODO: not implemented yet
+    public static int undoLimit = 30; // TODO: not implemented yet
 
     // NOTE: the built-in undo/redo system does not allow for undoing and redoing deletions.
     // you likely aren't supposed to do that.
@@ -42,7 +48,6 @@ public class UndoRedoSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // records the object and the action comitted. (TODO: make static)
@@ -59,12 +64,12 @@ public class UndoRedoSystem : MonoBehaviour
     // }
 
     // records the object and its transformation.
-    public static void RecordAction(GameObject entity, bool alive, bool active, Vector3 position, Quaternion rotation, Vector3 scale)
+    public static void RecordAction(GameObject entity, int type, bool active, Vector3 position, Quaternion rotation, Vector3 scale)
     {
         // records the action
         LogEntry entry;
         entry.entity = entity;
-        entry.alive = alive;
+        entry.type = type;
         entry.active = active;
 
         entry.position = position;
@@ -84,6 +89,16 @@ public class UndoRedoSystem : MonoBehaviour
     {
         undoList.AddFirst(entry);
 
+        // undo limit has been reached.
+        if(undoList.Count > undoLimit) // undo list has surpassed the undo limit
+        {
+            do
+            {
+                undoList.RemoveLast();
+            } while (undoList.Count > undoLimit);
+        }
+
+        // redo stack is cleared out.
         // TODO: work out how to track object creation and destruction.
         redoStack.Clear();
     }
@@ -100,9 +115,26 @@ public class UndoRedoSystem : MonoBehaviour
 
         LogEntry e0; // the entry that will be undone and put on the redo stack.
         LogEntry e1; // the entry that will be at the top of the undo "stack" and will be the current action.
+        // int typeTemp = 0; // temporary object for switching types
 
         e0 = undoList.First.Value; // gets the first entry
         // e1.entity = e0.entity; // gets the first entry again (this doesn't mean anything)
+
+        // if the entity has been deleted.
+        if(e0.entity == null)
+        {
+            undoList.RemoveFirst();
+            return;
+        }
+
+        // object creation is being undone.
+        // undoing object creation
+        // if(undoList.First.Value.type == 1)
+        // {
+        //     undoList.First.Value.entity.gameObject.transform.SetParent(undoParent.transform);
+        //     // undoParent;
+        // }
+
 
         // steps
         // 1 - get transformation information from object, and save it to e1's PRS variables.
@@ -111,7 +143,8 @@ public class UndoRedoSystem : MonoBehaviour
 
         // swaps transform values between game object and attached Transform object.
         // e1 gets the values from the object on e0. This is the same object that's on e1.
-        // e1.alive;
+        // typeTemp = e0.type;
+        // e1.type = e0.type;
         e1.active = e0.entity.active;
         e1.position = e0.entity.transform.position; // copies the object's current position
         e1.rotation = e0.entity.transform.rotation; // copies the object's current rotation
@@ -151,6 +184,13 @@ public class UndoRedoSystem : MonoBehaviour
         e0 = redoStack.Peek(); // gets the first entry
         e1.entity = e0.entity; // gets the first entry again
         // e1.entity = e0.entity; // gets the first entry again (this doesn't mean anything)
+
+        // if the entity has been deleted.
+        if (e0.entity == null)
+        {
+            redoStack.Pop();
+            return;
+        }
 
         // steps
         // 1 - get transformation information from object, and save it to e1's PRS variables.

@@ -59,6 +59,13 @@ namespace GED
         // the currently selected object
         private GameObject selectedObject;
 
+        // the file that will be read from or written to.
+        public string fileName = "";
+
+        // list of entities to be saved to and loaded from files
+        // this feature was not completed.
+        private List<GameObject> fileObjectList;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -284,7 +291,8 @@ namespace GED
 
             newObject.GetComponent<ObjectScript>().camera = cam1;
 
-
+            // adds the object to the file list.
+            fileObjectList.Add(newObject);
         }
 
         // sets the selected object.
@@ -302,14 +310,45 @@ namespace GED
         }
 
         // TOGGLES //
+        // it is a player
         public void IsPlayer()
         {
             addPlayerScript = !addPlayerScript;
         }
 
+        // it has a rigid body
         public void HasRigidBody()
         {
             addRigidBody = !addRigidBody;
+        }
+
+        // OTHER
+        // adds an objecto the list of items to be saved.
+        public void AddObjectToSaveList(GameObject entity)
+        {
+            // the list contains the files
+            if(fileObjectList.Contains(entity))
+                fileObjectList.Add(entity);
+        }
+
+        // removes object from list of items to be saved
+        public void RemoveObjectFromSaveList(GameObject entity)
+        {
+            fileObjectList.Remove(entity);
+        }
+
+        // saves the data from the file
+        public void SaveDataToFile()
+        {
+            // this was not completed in time for the submission.
+            Debug.Log("Data saving system was not completed.");
+        }
+
+        // loads the data from the file
+        public void LoadDataFromFile()
+        {
+            // this was not completed in time for the submission.
+            Debug.Log("Data loading system was not completed.");
         }
 
         // Update is called once per frame
