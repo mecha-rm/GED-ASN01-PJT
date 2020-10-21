@@ -8,13 +8,17 @@ using GED;
 // log entry for undo/redo 
 public struct LogEntry
 {
-    // if alive is false, then entity
-    public GameObject entity; // the object
+    public GameObject entity; // the object this log applies to.
 
-    // -1 = deletion entry, 0 = transformation data, 1 = activation entry
-    public int type; // the functionality was not completed in time
-    public bool active; // the object is active (i.e. visible) // TODO: this doesn't work since the update
+    // used for tracking object creation/deletion: -1 = deletion entry, 0 = transformation data, 1 = activation entry
+    // the functionality was not completed in time, and thus is not used.
+    public int type; 
 
+    // the object is active (i.e. visible). 
+    // This does not work because invisible objects are not updated, and thus can't track the change.
+    public bool active; 
+
+    // transformation variables
     public Vector3 position; // position
     public Quaternion rotation; // rotation
     public Vector3 localScale; // scale
@@ -23,27 +27,26 @@ public struct LogEntry
 // class for the undo and redo system.
 public class UndoRedoSystem : MonoBehaviour
 {
-    // parents for undo and redo
+    // parents for undo and redo (unused)
+    // the idea was to save the created/deleted object (or a copy) as a child of an empty object (which would not be visible).
+    // if the user restores the object, it would be taken from that empty object and restored. This was not completed.
     // public static GameObject undoParent = new GameObject(); // create empty object
     // public static GameObject redoParent = new GameObject(); // create empty object
 
     // the undo list. When an action is made, an undo entry is logged.
     // when an action occurs, it puts an item on the undo list.
-    // this is treated as a stack, but is a linked list since items need to be deleted if the undo list surpasses a specific size.
+    // this is saved as a linked list since items at the front need to be deleted if the undo list surpasses a specific size.
     private static LinkedList<LogEntry> undoList = new LinkedList<LogEntry>();
 
-    // a redo stack. When an item is pulled off of the undo stack, it is placed on the redo stack.
-    // if something new is placed on the undo stack, then the redo stack is cleared.
+    // a redo stack. When an item is pulled out of the undo list, it is placed on the redo stack.
+    // if something new is placed in the undo list, then the redo stack is cleared.
     private static Stack<LogEntry> redoStack = new Stack<LogEntry>();
 
-    // a game object used to keep track of deleted objects
-    // private GameObject instList;
-
     // the undo limit for the undo-redo system.
-    public static int undoLimit = 30; // TODO: not implemented yet
+    public static int undoLimit = 30;
 
-    // NOTE: the built-in undo/redo system does not allow for undoing and redoing deletions.
-    // you likely aren't supposed to do that.
+    // NOTE: the built-in Unity undo/redo system does not allow for undoing and redoing deletions.
+    // * however, you shouldn't be using it anyway.
 
     // Start is called before the first frame update
     void Start()
@@ -76,11 +79,8 @@ public class UndoRedoSystem : MonoBehaviour
         entry.rotation = rotation;
         entry.localScale = scale;
 
-        // undoList.AddFirst(entry);
-        // 
-        // // TODO: work out how to track object creation and destruction.
-        // redoStack.Clear();
-
+        
+        // calls other function of the same name
         RecordAction(entry);
     }
 
@@ -95,7 +95,7 @@ public class UndoRedoSystem : MonoBehaviour
             do
             {
                 undoList.RemoveLast();
-            } while (undoList.Count > undoLimit);
+            } while (undoList.Count > undoLimit); // remove oldest logs to reduce size.
         }
 
         // redo stack is cleared out.
@@ -124,10 +124,11 @@ public class UndoRedoSystem : MonoBehaviour
         if(e0.entity == null)
         {
             undoList.RemoveFirst();
+            UndoAction(); // calls the function again to deal with the redo operation
             return;
         }
 
-        // object creation is being undone.
+        // object creation is being undone. This was not completed.
         // undoing object creation
         // if(undoList.First.Value.type == 1)
         // {
@@ -189,6 +190,7 @@ public class UndoRedoSystem : MonoBehaviour
         if (e0.entity == null)
         {
             redoStack.Pop();
+            RedoAction(); // calls the function again to deal with the redo operation
             return;
         }
 

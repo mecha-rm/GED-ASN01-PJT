@@ -1,14 +1,4 @@
-﻿  FileSystem.cpp
-C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\FileSystem.h(146,23): warning C4251: 'FileSystem::filePath': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'FileSystem'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstring(4564): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\FileSystem.h(149,19): warning C4251: 'FileSystem::file': class 'std::basic_fstream<char,std::char_traits<char>>' needs to have dll-interface to be used by clients of class 'FileSystem'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\iosfwd(226): message : see declaration of 'std::basic_fstream<char,std::char_traits<char>>'
-C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\FileSystem.h(152,34): warning C4251: 'FileSystem::records': class 'std::vector<std::string,std::allocator<std::string>>' needs to have dll-interface to be used by clients of class 'FileSystem'
-C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\FileSystem.h(152): message : see declaration of 'std::vector<std::string,std::allocator<std::string>>'
-C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\FileSystem.cpp(253,26): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\FileSystem.cpp(412,48): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  GED - ASN01.cpp
-  Wrapper.cpp
+﻿  Wrapper.cpp
 C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\FileSystem.h(146,23): warning C4251: 'FileSystem::filePath': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'FileSystem'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstring(4564): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
 C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\FileSystem.h(149,19): warning C4251: 'FileSystem::file': class 'std::basic_fstream<char,std::char_traits<char>>' needs to have dll-interface to be used by clients of class 'FileSystem'
@@ -21,8 +11,8 @@ C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\Wrapper.h(52,45): warning C4190
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstring(4564): message : see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
      Creating library C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\x64\Release\GED - ASN01.lib and object C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\x64\Release\GED - ASN01.exp
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\FileSystem.cpp(227): warning C4715: 'FileSystem::ReadRecord': not all control paths return a value
-  All 301 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  0 of 301 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   GED - ASN01.vcxproj -> C:\Users\roder\source\year 3 repos\GED-ASN01-DLL\x64\Release\GED - ASN01.dll

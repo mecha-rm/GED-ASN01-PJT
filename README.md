@@ -7,6 +7,8 @@ The instructions for the game are shown below.
 --- KEYBOARD/MOUSE CONTROLS ---
 (I) - Show/Hide Instruction Panel
 (U) - Show/Hide User Interface
+(CTRL + Z) - Undo
+(CTRL + Y) - Redo
 
 --- When CameraLock is Off ---
 (WASDQR) - Move Camera
@@ -28,11 +30,17 @@ To lock the controls on a PlayerObject, select that object and use the "controlL
 
 - PART 2 -
 Design Patterns
-* Command Design Pattern:
-* Factory Design Pattern:
+* Command Design Pattern: Undo/Redo
+	- Use CTRL + Z & CTRL + Y for undo/redo, or menu buttons
+	- Doesn't allow for the undoing or redoing of object creation or destruction.
+* Factory Design Pattern: Spawner
+	- Create custom spawner using UI button.
+	- Add entities and add options in the spawner that index wise correspond with said entities.
 * Optional Design Pattern:
-	- State Machine:
-	- Observer (Bonus):
+	- State Machine: state machine changes state via number or name (if applicable), then notifies observers.
+	- Observer (Bonus): tracks changes in state machine. Derived classes determine how observer reacts.
 
 The example for state machines has a piece of text that shows which object is selected.
 This is finicky due to the hitgeometry, and other than this label it doesn't do anything.
+
+DLL for saving and loading files was not completed. Crashes Unity if attempted.

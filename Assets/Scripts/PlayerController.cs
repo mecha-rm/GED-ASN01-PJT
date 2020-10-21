@@ -1,9 +1,9 @@
-﻿using System.Collections;
+﻿// References
+// * https://www.youtube.com/watch?v=lYIRm4QEqro&feature=emb_rel_pause
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-
-//Movement of camera is refers to this video https://www.youtube.com/watch?v=lYIRm4QEqro&feature=emb_rel_pause
 
 public class PlayerController : MonoBehaviour
 {

@@ -27,11 +27,11 @@ public abstract class StateObserver : MonoBehaviour
         if (subject != null)
             subject.DetachObserver(this);
 
-        // attaches this to new subject. This sets the value of 'subject'.
+        // attaches this observer to a new subject. This sets the value of 'subject'.
         newSubject.AttachObserver(this);
     }
 
-    // called when the state changes. Called by subject object.
+    // called by the subject object when the state changes. This must be overridden by observer subclasses.
     public abstract void OnStateChange();
 
     // Update is called once per frame

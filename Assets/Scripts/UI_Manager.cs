@@ -47,7 +47,7 @@ namespace GED
 
         // main camera and secondary camera
         // the original plan was to allow for the switching of displays, but instead we're using turning on and off the UI.
-        private bool swapCam = false;
+        private bool swapCam = false; // unused
         public Camera cam1;
         public Camera cam2;
 
@@ -362,7 +362,7 @@ namespace GED
             if (Input.GetKeyDown(KeyCode.I))
                 instructionPanel.SetActive(!instructionPanel.active);
 
-            // switches the camera
+            // switches the camera (unused)
             // if(Input.GetKeyDown(KeyCode.C))
             // {
             // 

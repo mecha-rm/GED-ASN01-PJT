@@ -22,6 +22,7 @@ public class FileStream : MonoBehaviour
     const string DLL_NAME = "GED - ASN01";
 
     // Functions from DLL
+    // Calling these cause Unity to crash.
     [DllImport(DLL_NAME)]
     private static extern bool OpenForReading([In] byte[] arr);
 
@@ -37,17 +38,17 @@ public class FileStream : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BinaryFormatter converter = new BinaryFormatter();
-        MemoryStream mStream = new MemoryStream();
-        string file = "test.txt";
-        string f2 = "";
-        
-        converter.Serialize(mStream, file);
-        
-        // Test
-        OpenForWriting(mStream.ToArray(), true); // crahsed unity
-        f2 = GetFilePath();
-        Debug.Log(f2);
+        // BinaryFormatter converter = new BinaryFormatter();
+        // MemoryStream mStream = new MemoryStream();
+        // string file = "test.txt";
+        // string f2 = "";
+        // 
+        // converter.Serialize(mStream, file);
+        // 
+        // // Test
+        // OpenForWriting(mStream.ToArray(), true); // crahsed unity
+        // f2 = GetFilePath();
+        // Debug.Log(f2);
     }
 
     // adds an object to the list for saving/loading. An object cannot be put into the list twice.

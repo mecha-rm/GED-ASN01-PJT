@@ -1,14 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
-using UnityEngine;
-
-/*
+﻿/*
  * References:
     - https://docs.unity3d.com/ScriptReference/Transform-position.html
     - https://docs.unity3d.com/ScriptReference/Transform-rotation.html
     - https://docs.unity3d.com/ScriptReference/Transform-localScale.html
  */
+using System.Collections;
+using System.Collections.Generic;
+using System.Numerics;
+using UnityEngine;
+
+
 // level editor namespace
 namespace GED
 {
